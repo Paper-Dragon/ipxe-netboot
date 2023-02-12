@@ -1,0 +1,22 @@
+#!ipxe
+
+# Ubuntu Operating System
+# https://www.ubuntu.com
+
+
+
+
+iseq ${os_arch} amd64 && set ubuntu_iso_url http://${boot_domain}/ubuntu-20.04-desktop-amd64.iso ||
+
+set netboot_params ip=dhcp url=${ubuntu_iso_url} || set netboot_params
+echo Loading Ubuntu Subiquity Network Installer...
+kernel http://${boot_domain}/vmlinuz root=/dev/ram0 ramdisk_size=1500000 ${netboot_params} ${install_params} initrd=initrd.magic ${cmdline}
+initrd http://${boot_domain}/initrd
+echo
+echo MD5sums:
+md5sum vmlinuz initrd
+boot
+
+:ubuntu_exit
+clear menu
+exit 0
